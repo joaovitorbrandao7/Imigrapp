@@ -62,6 +62,7 @@ public class TemaController {
 			return ResponseEntity.ok().body("Tema deletado com sucesso!!!");
 		}
 		else {
+			return ResponseEntity.ok().body("Tema não encontrado!!!");
 		}
 		return null;
 	}
