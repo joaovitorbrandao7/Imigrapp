@@ -38,7 +38,7 @@ public class PostagemController
 				.orElse(ResponseEntity.notFound().build());
 	}
 	
-	@GetMapping("/postagem/{campoPostagem}")
+	@GetMapping("/nome/{campoPostagem}")
 	public ResponseEntity<List<Postagem>> getByPostagem(@PathVariable String campoPostagem)
 	{
 		return ResponseEntity.ok(repository.findAllByCampoPostagemContainingIgnoreCase(campoPostagem));
