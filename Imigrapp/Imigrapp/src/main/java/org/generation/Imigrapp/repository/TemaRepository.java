@@ -6,7 +6,7 @@ import org.generation.Imigrapp.model.Tema;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface TemaRepository extends JpaRepository<Tema, Long>{
-	
-	public List<Tema> findAllByNomeContainingIgnoreCase (String nome_tema);
 
+	public List<Tema> findAllByNomeTemaContainingIgnoreCase (String nomeTema);
+	
 }

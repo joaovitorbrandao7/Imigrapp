@@ -18,13 +18,13 @@ public class Tema
 	
 	@NotNull
 	@Size(min=5, max= 100)
-	private String nome_tema;
+	private String nomeTema;
 	
 	@NotNull
 	@Size(min=10, max=200)
 	
 	
-	private String descricao_tema;
+	private String descricaoTema;
 
 	public long getId()
 	{
@@ -36,25 +36,22 @@ public class Tema
 		this.id = id;
 	}
 
-	public String getNome_tema()
-	{
-		return nome_tema;
+	public String getNomeTema() {
+		return nomeTema;
 	}
 
-	public void setNome_tema(String nome_tema)
-	{
-		this.nome_tema = nome_tema;
+	public void setNomeTema(String nomeTema) {
+		this.nomeTema = nomeTema;
 	}
 
-	public String getDescricao_tema()
-	{
-		return descricao_tema;
+	public String getDescricaoTema() {
+		return descricaoTema;
 	}
 
-	public void setDescricao_tema(String descricao_tema)
-	{
-		this.descricao_tema = descricao_tema;
+	public void setDescricaoTema(String descricaoTema) {
+		this.descricaoTema = descricaoTema;
 	}
+
 	
 	
 }
