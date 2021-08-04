@@ -64,6 +64,5 @@ public class TemaController {
 		else {
 			return ResponseEntity.ok().body("Tema não encontrado!!!");
 		}
-		return null;
 	}
 }
