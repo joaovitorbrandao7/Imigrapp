@@ -43,11 +43,16 @@ public class UsuarioController {
 
 	}
 	@PostMapping("/logar")
-	public ResponseEntity<UsuarioDTO> autentication(@RequestBody Optional<UsuarioDTO> user){
-		return servicos.Logar(user).map(resp-> ResponseEntity.ok(resp))
-				.orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
-	}
+	public ResponseEntity<Object> logar(@Valid @RequestBody UsuarioDTO loginSenha) {
+		Optional<?> objetoCredenciado = servicos.logar(loginSenha);
 
+		if (objetoCredenciado.isPresent()) {
+			return ResponseEntity.status(201).body(objetoCredenciado.get());
+		} else {
+			return ResponseEntity.status(400).build();
+		}
+
+	}
 	
     @GetMapping("/todes")
     public ResponseEntity<List<Usuario>> getAllUsuario(){
@@ -86,10 +91,10 @@ public class UsuarioController {
 	}
     
     @DeleteMapping("/deletar/{id_usuario}")
-    public ResponseEntity<String> deletarPorId(@PathVariable long idUsuario) {
-		Optional<Usuario> usuarioExistente = repository.findById(idUsuario);
+    public ResponseEntity<String> deletarPorId(@PathVariable long id_usuario) {
+		Optional<Usuario> usuarioExistente = repository.findById(id_usuario);
 		if (usuarioExistente.isPresent()) {
-			repository.deleteById(idUsuario);
+			repository.deleteById(id_usuario);
 			return ResponseEntity.status(200).build();
 		} else {
 			return ResponseEntity.status(400).build();

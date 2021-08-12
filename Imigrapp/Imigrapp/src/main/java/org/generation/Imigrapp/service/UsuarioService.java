@@ -29,26 +29,27 @@ public class UsuarioService {
 		}
 	}
 		
-		public Optional<UsuarioDTO> Logar(Optional<UsuarioDTO> user){
-			BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(); 
+	public Optional<?> logar (UsuarioDTO usuarioParaLogin) {
+		return repository.findByEmail(usuarioParaLogin.getEmail()).map(usuarioExistente -> {
+			BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
-	        Optional<Usuario> usuario = repository.findByEmail(user.get().getEmail());
+			if (encoder.matches(usuarioParaLogin.getSenha(), usuarioExistente.getSenha())) {
+				String estruturaBasic = usuarioParaLogin.getEmail() + ":" + usuarioParaLogin.getSenha(); 
+				byte[] autorizacaoBase64 = Base64.encodeBase64(estruturaBasic.getBytes(Charset.forName("US-ASCII"))); 
+				String autorizacaoHeader = "Basic " + new String(autorizacaoBase64);
 
-	        if(usuario.isPresent()) {
-	        	if(encoder.matches(user.get().getSenha(), usuario.get().getSenha())) {
-	        		String auth = user.get().getEmail()+ ":" + user.get().getSenha();
-	        		byte[] encodedAuth = Base64.encodeBase64(auth.getBytes(Charset.forName("US-ASCII")));
-	        		String authHeader = "Basic " + new String (encodedAuth);
-	        		
-	        		user.get().setToken(authHeader);
-	        		user.get().setEmail(usuario.get().getEmail());
-	        		
-	        		return user;
-
-	        	}
-	        }
-	        return null;
-	        	}
+				usuarioParaLogin.setToken(autorizacaoHeader);
+				usuarioParaLogin.setId_usuario(usuarioExistente.getId_usuario());
+				usuarioParaLogin.setNomeUsuario(usuarioExistente.getNomeUsuario());
+				usuarioParaLogin.setSenha(usuarioExistente.getSenha());
+				return Optional.ofNullable(usuarioParaLogin);
+			} else {
+				return Optional.empty();
+			}
+		}).orElseGet(() -> {
+			return Optional.empty();
+		});
+	}
 
 		 public Optional<?> alterarUsuario(UsuarioDTO usuarioParaAlterar) {
 			return repository.findById(usuarioParaAlterar.getId_usuario()).map(usuarioExistente -> {
